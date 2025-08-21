@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import "./slider.css";
+import "./Slider.css";
 
 export default function Slider({ items = [], onActiveChange }) {
   const slides = items.slice(0, 5); 
