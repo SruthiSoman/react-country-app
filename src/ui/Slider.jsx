@@ -19,7 +19,7 @@ export default function Slider({ items = [], onActiveChange }) {
   if (!slides.length) return null;
 
   return (
-    <div className="hero-slider">
+    <div className="hero-slider h-100">
       <button className="nav prev" onClick={prev} aria-label="Previous">
         <IoChevronBack size={22} />
       </button>
