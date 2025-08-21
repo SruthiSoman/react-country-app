@@ -1,3 +1,7 @@
+body {
+  font-family: "Noto Sans", sans-serif;
+}
+
 /* Clean base */
 body { background-color: #f6f8fb; }
 .login-bg { background: linear-gradient(135deg, #eef2ff, #f8f9ff); }
