@@ -1,0 +1,129 @@
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.login-container {
+  flex: 1;
+  max-width: 400px;
+}
+
+.login-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  line-height: 42px;
+}
+
+.login-subtitle {
+  margin-bottom: 29px;
+  font-weight: 700;
+  line-height: 26px;
+  font-size: 16px;
+  color: #3D3D3D;
+}
+
+.login-subtitle a {
+  color: #587FFF;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.login-input {
+  font-size: 16px;
+  font-weight: 600;
+  color: #3E3E3E;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #3E3E3E;
+  border-radius: 2px;
+}
+
+.login-remember {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.login-remember input[type="checkbox"] {
+  appearance: none;          
+  -webkit-appearance: none;  
+  width: 32px;
+  height: 32px;
+  border: 2px solid #000000; 
+  cursor: pointer;
+}
+
+.login-remember label {
+  font-size: 16px;        
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background: #3C3C3C;
+  color: #FCFCFC;
+  border: none;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background: #000;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #CFCFCF; 
+  margin: 0 9.5px;               
+}
+
+
+.login-divider {
+  margin: 32px 0;
+  text-align: center;
+  color: #3D3D3D;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.social-icons svg {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #000;  
+  border-radius: 1000px;   
+  padding: 14px;          
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 1;
+}
+
+.login-illustration {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-illustration img {
+  max-width: 70%;
+}

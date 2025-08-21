@@ -1,82 +1,88 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Container, Row, Col, Button, Spinner, Alert, Navbar, Nav, Form } from 'react-bootstrap'
-import { fetchCountries, loadMore, setRegion } from '../slices/countriesSlice.jsx'
-import Slider from '../ui/Slider.jsx'
-import CountryCard from '../ui/CountryCard.jsx'
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import { TbBrandGoogle, TbBrandFacebook, TbBrandTwitter } from "react-icons/tb";
+import { FiLinkedin } from "react-icons/fi";
+import "./Login.css";
 
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-const REGIONS = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'Polar']
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    // password validation
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert("Password must be at least 8 chars, 1 capital, 1 number, 1 symbol");
+      return;
+    }
 
-export default function Home() {
-const dispatch = useDispatch()
-const { filtered, status, error, visibleCount, region } = useSelector((s) => s.countries)
+    dispatch(setAuth(true));
+    navigate("/home");
+  };
 
+  return (
+    <div className="login-wrapper">
+      <div className="login-container">
+        <h2 className="login-title">Sign In</h2>
+        <p className="login-subtitle">
+          New user? <a href="#">Create an account</a>
+        </p>
 
-useEffect(() => {
-dispatch(fetchCountries())
-}, [dispatch])
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username or email"
+            className="login-input mb-3"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="login-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
+          <div className="login-remember my-3">
+            <input type="checkbox" id="remember" />
+            <label htmlFor="remember">Keep me signed in</label>
+          </div>
 
-const visible = filtered.slice(0, visibleCount)
+          <button type="submit" className="login-btn">
+            Sign In
+          </button>
+        </form>
 
+        <div className="divider">
+          <span className="login-divider">Or Sign In With</span>
+        </div>
 
-return (
-<>
-<Navbar bg="light" expand="md" className="shadow-sm">
-<Container>
-<Navbar.Brand className="fw-bold">MT • Countries</Navbar.Brand>
-<Navbar.Toggle aria-controls="nav" />
-<Navbar.Collapse id="nav">
-<Nav className="ms-auto gap-2 align-items-center">
-<Form.Select
-value={region}
-onChange={(e) => dispatch(setRegion(e.target.value))}
-style={{ maxWidth: 220 }}
->
-{REGIONS.map((r) => (
-<option key={r} value={r}>{r}</option>
-))}
-</Form.Select>
-</Nav>
-</Navbar.Collapse>
-</Container>
-</Navbar>
-
-
-<Slider />
-
-
-<Container className="py-4">
-{status === 'loading' && (
-<div className="d-flex justify-content-center py-5">
-<Spinner animation="border" />
-</div>
-)}
-{status === 'failed' && <Alert variant="danger">{error}</Alert>}
-
-
-<Row xs={1} sm={2} md={3} lg={4} className="g-3">
-{visible.map((c) => (
-<Col key={c.name}>
-<CountryCard country={c} />
-</Col>
-))}
-</Row>
-
-
-{visible.length === 0 && status === 'succeeded' && (
-<p className="text-center text-muted py-4">No countries found for this region.</p>
-)}
-
-
-{visible.length < filtered.length && (
-  <div className="d-flex justify-content-center mt-4">
-<Button onClick={() => dispatch(loadMore())} size="lg">Load More</Button>
-</div>
-)}
-</Container>
-</>
-)
+        <div className="social-icons">
+          <TbBrandGoogle />
+          <TbBrandFacebook />
+          <FiLinkedin />
+          <TbBrandTwitter />
+        </div>
+      </div>
+      <div
+        xs={12}
+        md={6}
+        className="d-none d-md-flex align-items-center justify-content-center"
+      >
+        <img
+          src="/illustration.svg"
+          alt="illustration"
+          className="img-fluid"
+          style={{ maxHeight: "400px" }}
+        />
+      </div>
+    </div>
+  );
 }
