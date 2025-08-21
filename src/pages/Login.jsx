@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../slices/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -9,17 +9,43 @@ import "./Login.css";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedRemember = localStorage.getItem("rememberMe") === "true";
+
+    setRemember(savedRemember); 
+
+    if (savedRemember) {
+      const savedEmail = localStorage.getItem("email") || "";
+      const savedPassword = localStorage.getItem("password") || "";
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+    } else {
+      setEmail(""); 
+      setPassword("");
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // password validation
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
     if (!passwordRegex.test(password)) {
       alert("Password must be at least 8 chars, 1 capital, 1 number, 1 symbol");
       return;
+    }
+
+    if (remember) {
+      localStorage.setItem("rememberMe", "true");
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+    } else {
+      localStorage.removeItem("rememberMe");
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
     }
 
     dispatch(setAuth(true));
@@ -50,9 +76,17 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <div className="login-remember my-3">
-            <input type="checkbox" id="remember" />
-            <label htmlFor="remember">Keep me signed in</label>
+          <div className="login-remember my-4 form-check">
+            <input
+              type="checkbox"
+              id="remember"
+              className="form-check-input"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+            />
+            <label htmlFor="remember" className="form-check-label">
+              Keep me signed in
+            </label>
           </div>
 
           <button type="submit" className="login-btn">
