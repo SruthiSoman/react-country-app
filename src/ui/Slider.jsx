@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import { MdArrowBack, MdArrowForward } from "react-icons/md";
 import "./Slider.css";
 
 export default function Slider({ items = [], onActiveChange }) {
-  const slides = items.slice(0, 5); 
+  const slides = items.slice(0, 5);
   const [index, setIndex] = useState(0);
 
-  
   useEffect(() => setIndex(0), [items]);
 
   useEffect(() => {
@@ -19,12 +18,12 @@ export default function Slider({ items = [], onActiveChange }) {
   if (!slides.length) return null;
 
   return (
-    <div className="hero-slider h-100">
+    <div className="hero-slider">
       <button className="nav prev" onClick={prev} aria-label="Previous">
-        <IoChevronBack size={22} />
+        <MdArrowBack size={22} />
       </button>
       <button className="nav next" onClick={next} aria-label="Next">
-        <IoChevronForward size={22} />
+        <MdArrowForward size={22} />
       </button>
 
       {slides.map((c, i) => (

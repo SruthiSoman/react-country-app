@@ -4,6 +4,7 @@ import { setAuth } from "../slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { TbBrandGoogle, TbBrandFacebook, TbBrandTwitter } from "react-icons/tb";
 import { FiLinkedin } from "react-icons/fi";
+import Illustrator from '../assets/illustrator.png'
 import "./Login.css";
 
 export default function Login() {
@@ -111,10 +112,9 @@ export default function Login() {
         className="d-none d-md-flex align-items-center justify-content-center"
       >
         <img
-          src="/illustration.svg"
+          src={Illustrator}
           alt="illustration"
           className="img-fluid"
-          style={{ maxHeight: "400px" }}
         />
       </div>
     </div>

@@ -22,6 +22,17 @@ export default function Home() {
   const [activeSlide, setActiveSlide] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
+   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 992) {
+        setMenuOpen(false); 
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  
+
   useEffect(() => {
     if (status === "idle") dispatch(fetchCountries());
   }, [status, dispatch]);
@@ -31,39 +42,36 @@ export default function Home() {
 
   return (
     <Container className="py-3">
-      <Row className="align-items-center mb-3">
-  {/* Left side - Title */}
-  <Col xs={6} md={6} className="text-start">
-    <h3 className="m-0 fw-bold">Countries</h3>
-  </Col>
+      <Row className="align-items-center mb-5 nav-text">
+        <Col xs={6} md={6} className="text-start">
+          <p className="m-0 fw-bold fs-3">Countries</p>
+        </Col>
 
-  {/* Desktop filters */}
-  <Col xs={6} className="d-none d-md-block text-end">
-    <Nav className="justify-content-end filter-tabs">
-      {FILTERS.map((f) => (
-        <Nav.Item key={f}>
-          <Nav.Link
-            active={region === f}
-            onClick={() => dispatch(setRegion(f))}
+        <Col xs={6} className="d-none d-md-block text-end">
+          <Nav className="justify-content-end fs-6 filter-tabs">
+            {FILTERS.map((f) => (
+              <Nav.Item key={f}>
+                <Nav.Link
+                  active={region === f}
+                  onClick={() => dispatch(setRegion(f))}
+                >
+                  {f}
+                </Nav.Link>
+              </Nav.Item>
+            ))}
+          </Nav>
+        </Col>
+
+        <Col xs={6} className="d-md-none text-end">
+          <Button
+            variant="link"
+            className="p-0"
+            onClick={() => setMenuOpen(!menuOpen)}
           >
-            {f}
-          </Nav.Link>
-        </Nav.Item>
-      ))}
-    </Nav>
-  </Col>
-
-  {/* Mobile hamburger */}
-  <Col xs={6} className="d-md-none text-end">
-    <Button
-      variant="link"
-      className="p-0"
-      onClick={() => setMenuOpen(!menuOpen)}
-    >
-      {menuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
-    </Button>
-  </Col>
-</Row>
+            {menuOpen ? <FiX size={28} color="#000" /> : <FiMenu size={28} color="#000" />}
+          </Button>
+        </Col>
+      </Row>
 
       {menuOpen && (
         <div className="mobile-filter p-3 border rounded mb-3">
@@ -83,14 +91,15 @@ export default function Home() {
       )}
       <h3 className="m-0 fw-bold welcome-title mb-4">WELCOME</h3>
 
-      <Row className="g-3 mb-4">
-        <Col md={8} xs={12}>
-          <Slider items={slides} onActiveChange={setActiveSlide} />
+      <Row className="g-4 mb-4 align-items-stretch flex-column-reverse flex-md-row">
+        <Col md={8} xs={12} className="d-flex">
+          <div className="slider-wrapper flex-fill">
+            <Slider items={slides} onActiveChange={setActiveSlide} />
+          </div>
         </Col>
-
-        <Col md={4} xs={12}>
+        <Col md={4} xs={12} className="d-flex">
           {activeSlide && (
-            <div className="p-2 border h-100 d-flex flex-column justify-content-center">
+            <div className="p-2 border w-100 d-flex flex-column justify-content-center active-slide">
               <div className="ratio ratio-4x3 mb-2 bg-light rounded overflow-hidden">
                 <img
                   src={activeSlide.flag}
@@ -99,20 +108,21 @@ export default function Home() {
                   style={{ objectFit: "cover" }}
                 />
               </div>
-              <h5 className="mb-1">{activeSlide.name}</h5>
-              <div className="text-muted">{activeSlide.region || "—"}</div>
+              
+              <h5 className="mb-1 text-center">{activeSlide.name}</h5>
+              <div className="text-muted text-center">{activeSlide.region || "—"}</div>
             </div>
           )}
         </Col>
       </Row>
 
-      <Row className="g-3 ">
+      <Row className="g-4 ">
         {visible.map((c) => (
-          <Col key={c.name} md={3} sm={6} xs={12}>
-            <div className="border p-2 h-100 d-flex align-items-center gap-2 country-card">
+          <Col key={c.name} md={6} sm={6} xs={12}>
+            <div className="border p-2 d-flex align-items-center gap-2 country-card">
               <div
-                className="ratio ratio-1x1 rounded bg-light overflow-hidden"
-                style={{ width: 52 }}
+                className="ratio ratio-1x1 bg-light overflow-hidden"
+                style={{ width: 100,marginLeft: 3 }}
               >
                 <img
                   src={c.flag}
@@ -122,7 +132,7 @@ export default function Home() {
                 />
               </div>
               <div className="ml-3">
-                <div className="fw-semibold country-name">{c.name}</div>
+                <div className="fw-semibold country-name ml-3">{c.name}</div>
                 <div className="text-muted small region-name">
                   {c.region || "—"}
                 </div>
@@ -133,7 +143,7 @@ export default function Home() {
       </Row>
 
       {visible.length < filtered.length && (
-        <div className="text-center mt-3">
+        <div className="text-center">
           <Button
             variant="dark"
             onClick={() => dispatch(loadMore())}
@@ -155,7 +165,7 @@ export default function Home() {
         Example@email.com
       </div>
 
-      <div className="text-center text-muted small mt-4 text-copy">
+      <div className="text-center text-muted small mt-4 text-copy mb-5">
         Copyright © 2020 Name. All rights reserved.
       </div>
     </Container>
